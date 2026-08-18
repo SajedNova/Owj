@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return 'hello';
+    return \Illuminate\Support\Facades\Hash::make('Farhan1@');
 })->name('home');
 
 // Authentication Routes
@@ -22,3 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/portfolios/{portfolio}/toggle-publish', [PortfolioController::class, 'togglePublish'])->name('portfolios.toggle-publish');
     Route::resource('team', TeamMemberController::class);
 });
+
+Route::post('/project-requests', [ProjectRequestController::class, 'store'])
+    ->name('project-requests.store')
+    ->middleware('throttle:5,1');
+Route::get('/', function () {
+    return view('index');
+})->name('home');
+Route::get('/', function () {
+    return view('index');
+})->name('home');
