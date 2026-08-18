@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\Admin\ProjectRequestController as AdminProjectRequestController;
 use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,7 @@ Route::get('/', function () {
 Route::get('/', function () {
     return view('index');
 })->name('home');
+Route::get('project-requests', [AdminProjectRequestController::class, 'index'])->name('project-requests.index');
+Route::get('project-requests/{projectRequest}', [AdminProjectRequestController::class, 'show'])->name('project-requests.show');
+Route::patch('project-requests/{projectRequest}/toggle-read', [AdminProjectRequestController::class, 'toggleRead'])->name('project-requests.toggle-read');
+Route::delete('project-requests/{projectRequest}', [AdminProjectRequestController::class, 'destroy'])->name('project-requests.destroy');
