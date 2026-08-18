@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>افزودن عضو تیم | پنل ادمین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand__mark">OJ</div>
+      <div class="brand__text">
+        <strong>پنل ادمین</strong>
+        <span>مدیریت سایت شرکتی</span>
+      </div>
+    </div>
+
+    <div class="nav-group-label">اصلی</div>
+    <nav class="nav">
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>
+        داشبورد
+      </a>
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        نمونه‌کارها
+      </a>
+      <a href="dashboard.html" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        اعضای تیم
+      </a>
+    </nav>
+
+    <div class="nav-group-label">سایر</div>
+    <nav class="nav">
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        تنظیمات
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar-round">ادمین</div>
+      <div>
+        <strong>مدیر سایت</strong>
+        <span>admin@company.ir</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>افزودن عضو تیم</h1>
+        <p>اطلاعات پروفایل عضو جدید تیم شرکت را وارد کنید</p>
+      </div>
+      <a href="dashboard.html" class="btn btn-outline btn-sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+        بازگشت به لیست
+      </a>
+    </header>
+
+    <div class="content content--form">
+      <form id="memberForm" method="POST" action="#" enctype="multipart/form-data">
+
+        <div class="form-card">
+          <h3>عکس پروفایل</h3>
+          <div class="avatar-upload">
+            <div class="avatar-upload__preview" id="avatarPreview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <label for="avatarInput" class="btn btn-outline btn-sm">انتخاب تصویر</label>
+              <div class="field-hint" style="margin-top:6px;">فرمت PNG یا JPG، حداکثر ۲ مگابایت</div>
+            </div>
+            <input type="file" id="avatarInput" name="avatar" accept="image/*" hidden>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3>اطلاعات اصلی</h3>
+          <div class="field-row">
+            <div class="field">
+              <label for="m_name">نام و نام‌خانوادگی</label>
+              <input type="text" id="m_name" name="name" placeholder="مثلاً: سارا محمدی" required>
+            </div>
+            <div class="field">
+              <label for="m_slug">نامک آدرس (slug) <small>یکتا</small></label>
+              <input type="text" id="m_slug" name="slug" placeholder="sara-mohammadi" style="direction:ltr; text-align:left;" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="m_role">نقش <small>آزاد</small></label>
+              <input type="text" id="m_role" name="role" placeholder="مثلاً: توسعه‌دهنده فرانت‌اند">
+            </div>
+            <div class="field">
+              <label for="m_experience">سابقه کاری</label>
+              <input type="text" id="m_experience" name="experience" placeholder="مثلاً: ۵ سال">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="m_bio">بیوگرافی</label>
+            <textarea id="m_bio" name="bio" placeholder="چند جمله درباره‌ی این عضو تیم..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3>مهارت‌ها</h3>
+          <div class="field">
+            <div class="tag-input" id="skillsTagInput">
+              <input type="text" id="skillsTagField" placeholder="تایپ کن و Enter بزن...">
+            </div>
+            <input type="hidden" name="skills" id="skillsHidden" value="[]">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <a href="dashboard.html" class="btn btn-outline">انصراف</a>
+          <button type="submit" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+            ذخیره عضو
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+</div>
+
+<script>
+const nameInput = document.getElementById('m_name');
+const slugInput = document.getElementById('m_slug');
+let slugTouched = false;
+slugInput.addEventListener('input', () => slugTouched = true);
+nameInput.addEventListener('input', () => {
+  if (slugTouched) return;
+  slugInput.value = nameInput.value.trim().toLowerCase()
+    .replace(/[^a-z0-9آ-ی\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+});
+
+document.getElementById('avatarInput').addEventListener('change', function(){
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('avatarPreview').innerHTML = `<img src="${e.target.result}">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+const skillsField = document.getElementById('skillsTagField');
+const skillsInput = document.getElementById('skillsTagInput');
+const skillsHidden = document.getElementById('skillsHidden');
+let skills = [];
+
+function renderSkills(){
+  skillsInput.querySelectorAll('.chip').forEach(c => c.remove());
+  skills.forEach((tag, idx) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.innerHTML = `${tag} <button type="button">×</button>`;
+    chip.querySelector('button').addEventListener('click', () => {
+      skills.splice(idx, 1);
+      renderSkills();
+    });
+    skillsInput.insertBefore(chip, skillsField);
+  });
+  skillsHidden.value = JSON.stringify(skills);
+}
+skillsField.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = skillsField.value.trim().replace(/,$/, '');
+    if (val) { skills.push(val); renderSkills(); }
+    skillsField.value = '';
+  } else if (e.key === 'Backspace' && skillsField.value === '' && skills.length) {
+    skills.pop();
+    renderSkills();
+  }
+});
+</script>
+</body>
+</html>
