@@ -6,6 +6,19 @@ use App\Http\Controllers\Admin\ProjectRequestController as AdminProjectRequestCo
 use App\Http\Controllers\ProjectRequestController;
 use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ContactController;
+
+Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+
+Route::resource('posts', AdminPostController::class)->except(['show']);
+Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])
+    ->name('posts.toggle-status');
 
 Route::get('/', function () {
     return \Illuminate\Support\Facades\Hash::make('Farhan1@');
