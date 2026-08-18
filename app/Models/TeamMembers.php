@@ -20,6 +20,11 @@ class TeamMembers extends Model
         'role',
         'skills',
         'experience',
+        'name_en',
+        'slug_en',
+        'role_en',
+        'experience_en',
+        'bio_en',
     ];
 
 

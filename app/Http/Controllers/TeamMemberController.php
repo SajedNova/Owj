@@ -48,6 +48,11 @@ class TeamMemberController extends Controller
             'bio' => 'nullable|string',
             'skills' => 'nullable|string',
             'experience' => 'nullable|string',
+            'name_en' => 'nullable|string|max:255',
+            'slug_en' => 'nullable|string|unique:team_members,slug_en,' . $team->id,
+            'role_en' => 'nullable|string|max:255',
+            'experience_en' => 'nullable|string|max:255',
+            'bio_en' => 'nullable|string',
         ]);
 
         if ($request->hasFile('avatar')) {

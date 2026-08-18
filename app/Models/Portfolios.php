@@ -23,6 +23,12 @@ class Portfolios extends Model
         'duration',
         'tools',
         'category',
+        'title_en',
+        'slug_en',
+        'description_en',
+        'short_description_en',
+        'client_name_en',
+        'duration_en',
     ];
 
     protected $casts = [
