@@ -40,6 +40,19 @@
 
                 <div class="field-row">
                     <div class="field">
+                        <label for="name_en">نام و نام‌خانوادگی (انگلیسی)</label>
+                        <input type="text" id="name_en" name="name_en" value="{{ old('name_en') }}" style="direction:ltr; text-align:left;">
+                        @error('name_en') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="field">
+                        <label for="slug_en">نامک آدرس انگلیسی (slug_en) <small>یکتا</small></label>
+                        <input type="text" id="slug_en" name="slug_en" value="{{ old('slug_en') }}" style="direction:ltr; text-align:left;">
+                        @error('slug_en') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
                         <label for="role">نقش</label>
                         <input type="text" id="role" name="role" value="{{ old('role') }}">
                         @error('role') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
@@ -51,10 +64,29 @@
                     </div>
                 </div>
 
+                <div class="field-row">
+                    <div class="field">
+                        <label for="role_en">نقش (انگلیسی)</label>
+                        <input type="text" id="role_en" name="role_en" value="{{ old('role_en') }}" style="direction:ltr; text-align:left;">
+                        @error('role_en') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="field">
+                        <label for="experience_en">سابقه کاری (انگلیسی)</label>
+                        <input type="text" id="experience_en" name="experience_en" value="{{ old('experience_en') }}" style="direction:ltr; text-align:left;">
+                        @error('experience_en') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
                 <div class="field">
                     <label for="bio">بیوگرافی</label>
                     <textarea id="bio" name="bio">{{ old('bio') }}</textarea>
                     @error('bio') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="field">
+                    <label for="bio_en">بیوگرافی (انگلیسی)</label>
+                    <textarea id="bio_en" name="bio_en" style="direction:ltr; text-align:left;">{{ old('bio_en') }}</textarea>
+                    @error('bio_en') <span style="color:red; font-size:12px;">{{ $message }}</span> @enderror
                 </div>
             </div>
 
@@ -93,6 +125,11 @@
     const slugInput = document.getElementById('slug');
     nameInput.addEventListener('input', () => {
         slugInput.value = nameInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+    });
+    const nameInputEn = document.getElementById('name_en');
+    const slugInputEn = document.getElementById('slug_en');
+    nameInputEn.addEventListener('input', () => {
+        slugInputEn.value = nameInputEn.value.trim().toLowerCase().replace(/\s+/g, '-');
     });
 
     const skillsField = document.getElementById('skillsTagField');

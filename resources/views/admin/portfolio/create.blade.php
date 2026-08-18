@@ -37,6 +37,23 @@
                 </div>
             </div>
 
+            <div class="field-row">
+                <div class="field">
+                    <label for="f_title_en">عنوان پروژه (انگلیسی)</label>
+                    <input type="text" id="f_title_en" name="title_en" value="{{ old('title_en') }}" placeholder="e.g. Negin E-commerce Platform" style="direction:ltr; text-align:left;">
+                    @error('title_en')
+                    <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="field">
+                    <label for="f_slug_en">نامک آدرس انگلیسی (slug_en) <small>یکتا</small></label>
+                    <input type="text" id="f_slug_en" name="slug_en" value="{{ old('slug_en') }}" placeholder="negin-shop-en" style="direction:ltr; text-align:left;">
+                    @error('slug_en')
+                    <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
             <div class="field">
                 <label for="f_short_description">توضیح کوتاه <small>برای کارت‌های لیست</small></label>
                 <textarea id="f_short_description" name="short_description" placeholder="یک خط درباره‌ی پروژه..." style="min-height:44px;">{{ old('short_description') }}</textarea>
@@ -46,9 +63,25 @@
             </div>
 
             <div class="field">
+                <label for="f_short_description_en">توضیح کوتاه انگلیسی</label>
+                <textarea id="f_short_description_en" name="short_description_en" placeholder="One line about the project..." style="min-height:44px; direction:ltr; text-align:left;">{{ old('short_description_en') }}</textarea>
+                @error('short_description_en')
+                <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="field">
                 <label for="f_description">توضیح کامل <small>برای صفحه‌ی جزئیات</small></label>
                 <textarea id="f_description" name="description" placeholder="توضیح کامل پروژه، چالش‌ها و راه‌حل‌ها...">{{ old('description') }}</textarea>
                 @error('description')
+                <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="field">
+                <label for="f_description_en">توضیح کامل انگلیسی</label>
+                <textarea id="f_description_en" name="description_en" placeholder="Full description of the project, challenges, solutions..." style="direction:ltr; text-align:left;">{{ old('description_en') }}</textarea>
+                @error('description_en')
                 <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
                 @enderror
             </div>
@@ -65,6 +98,23 @@
                     <label for="f_duration">مدت زمان انجام</label>
                     <input type="text" id="f_duration" name="duration" value="{{ old('duration') }}" placeholder="مثلاً: ۶ هفته">
                     @error('duration')
+                    <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label for="f_client_name_en">کارفرما (انگلیسی)</label>
+                    <input type="text" id="f_client_name_en" name="client_name_en" value="{{ old('client_name_en') }}" placeholder="Client name (Optional)" style="direction:ltr; text-align:left;">
+                    @error('client_name_en')
+                    <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="field">
+                    <label for="f_duration_en">مدت زمان انجام (انگلیسی)</label>
+                    <input type="text" id="f_duration_en" name="duration_en" value="{{ old('duration_en') }}" placeholder="e.g. 6 weeks" style="direction:ltr; text-align:left;">
+                    @error('duration_en')
                     <span class="field-error" style="color:red; font-size:12px;">{{ $message }}</span>
                     @enderror
                 </div>
@@ -172,6 +222,17 @@
         titleInput.addEventListener('input', () => {
             if (slugTouched) return;
             slugInput.value = titleInput.value.trim().toLowerCase()
+                .replace(/[^a-z0-9آ-ی\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        });
+        const enTitleInput = document.getElementById('f_title_en');
+        const enSlugInput = document.getElementById('f_slug_en');
+        let enSlugTouched = false;
+        enSlugInput.addEventListener('input', () => enSlugTouched = true);
+        enTitleInput.addEventListener('input', () => {
+            if (enSlugTouched) return;
+            enSlugInput.value = enTitleInput.value.trim().toLowerCase()
                 .replace(/[^a-z0-9آ-ی\s-]/g, '')
                 .replace(/\s+/g, '-')
                 .replace(/-+/g, '-');

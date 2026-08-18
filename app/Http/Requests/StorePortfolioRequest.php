@@ -33,7 +33,13 @@ class StorePortfolioRequest extends FormRequest
             'duration' => 'nullable|string|max:255',
             'category' => 'required|in:website,application',
             'is_published' => 'boolean',
-            'tools' => 'nullable|string'
+            'tools' => 'nullable|string',
+            'title_en' => 'nullable|string|max:255',
+            'slug_en' => ['nullable', 'string', Rule::unique('portfolios', 'slug_en')->ignore($this->route('portfolio'))],
+            'short_description_en' => 'nullable|string|max:255',
+            'description_en' => 'nullable|string',
+            'client_name_en' => 'nullable|string|max:255',
+            'duration_en' => 'nullable|string|max:255',
         ];
     }
 
@@ -47,7 +53,12 @@ class StorePortfolioRequest extends FormRequest
             'description.required' => 'توضیحات پروژه الزامی است.',
             'category.required' => 'دسته‌بندی الزامی است.',
             'category.in' => 'دسته‌بندی انتخاب شده معتبر نیست.',
-            'is_published.boolean' => 'این فیلد باید بصورت بولین باشد'
+            'is_published.boolean' => 'این فیلد باید بصورت بولین باشد',
+            'title_en.max' => 'عنوان انگلیسی نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+            'slug_en.unique' => 'این نامک انگلیسی قبلاً استفاده شده است.',
+            'short_description_en.max' => 'توضیحات کوتاه انگلیسی نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+            'client_name_en.max' => 'نام کارفرمای انگلیسی نباید بیشتر از ۲۵۵ کاراکتر باشد.',
+            'duration_en.max' => 'مدت زمان انگلیسی نباید بیشتر از ۲۵۵ کاراکتر باشد.',
         ];
     }
 }
