@@ -11,8 +11,13 @@
         @livewireStyles
     </head>
     <body>
-        {{ $slot }}
+        @include('partials.header')
+
+        @yield('content')
+
+        @include('partials.footer')
 
         @livewireScripts
+        @stack('scripts')
     </body>
 </html>
