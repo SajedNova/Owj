@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('excerpt')->nullable();
             $table->longText('content');
             $table->string('image')->nullable();
-            $table->string('status')->default('draft'); // draft | published
+            $table->string('status')->default('draft');
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->unsignedInteger('views')->default(0);
             $table->timestamp('published_at')->nullable();

@@ -198,24 +198,6 @@
 </head>
 <body>
 
-  <header class="lg-header" role="banner">
-    <div class="lg-brand">OWJcode <small>دقیق</small></div>
-    <nav class="lg-nav" aria-label="Main navigation">
-      <a href="{{ url('/') }}">خانه</a>
-      <a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'lg-active' : '' }}">وبلاگ</a>
-      <a href="{{ url('/#contact') }}">تماس با ما</a>
-    </nav>
-    <div class="lg-actions">
-      <span class="lg-badge"><strong>84K</strong> ★</span>
-      <section class="lg-04" aria-label="تغییر حالت روشن/تیره">
-        <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><filter id="lg-04-goo"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="goo"/><feBlend in="SourceGraphic" in2="goo"/></filter></svg>
-        <label class="lg-04__switch">
-          <input class="lg-04__input" type="checkbox" checked>
-          <span class="lg-04__track" aria-hidden="true"><span class="lg-04__goo"><span class="lg-04__blob lg-04__blob--fixed"></span><span class="lg-04__blob lg-04__blob--handle"></span></span></span>
-        </label>
-      </section>
-    </div>
-  </header>
 
   @yield('content')
 

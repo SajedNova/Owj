@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $posts = Post::with('author')
             ->latest()
-            ->paginate(10);
+            ->paginate(15);
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -24,22 +23,19 @@ class PostController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store(StorePostRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $this->validateData($request);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('posts', 'public');
         }
 
         $data['user_id'] = auth()->id();
-        $data['slug'] = Post::generateUniqueSlug($request->input('title'));
 
         Post::create($data);
 
-        return redirect()
-            ->route('posts.index')
-            ->with('success', 'پست جدید با موفقیت ایجاد شد.');
+        return redirect()->route('posts.index')->with('success', 'پست جدید با موفقیت ثبت شد.');
     }
 
     public function edit(Post $post)
@@ -47,9 +43,9 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(Request $request, Post $post)
     {
-        $data = $request->validated();
+        $data = $this->validateData($request);
 
         if ($request->hasFile('image')) {
             if ($post->image) {
@@ -60,9 +56,7 @@ class PostController extends Controller
 
         $post->update($data);
 
-        return redirect()
-            ->route('posts.index')
-            ->with('success', 'پست با موفقیت به‌روزرسانی شد.');
+        return redirect()->route('posts.index')->with('success', 'پست با موفقیت به‌روزرسانی شد.');
     }
 
     public function destroy(Post $post)
@@ -73,22 +67,54 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()
-            ->route('posts.index')
-            ->with('success', 'پست با موفقیت حذف شد.');
+        return back()->with('success', 'پست حذف شد.');
     }
 
     public function toggleStatus(Post $post)
     {
-        $post->update([
-            'status' => $post->status === Post::STATUS_PUBLISHED
-                ? Post::STATUS_DRAFT
-                : Post::STATUS_PUBLISHED,
-            'published_at' => $post->status === Post::STATUS_PUBLISHED
-                ? $post->published_at
-                : now(),
+        $post->status = $post->status === Post::STATUS_PUBLISHED
+            ? Post::STATUS_DRAFT
+            : Post::STATUS_PUBLISHED;
+
+        if ($post->status === Post::STATUS_PUBLISHED && empty($post->published_at)) {
+            $post->published_at = now();
+        }
+
+        $post->save();
+
+        return back()->with('success', 'وضعیت انتشار به‌روزرسانی شد.');
+    }
+
+    /**
+     * آپلود تصویر داخل متن پست (توسط ادیتور Quill فراخوانی می‌شود)
+     * و آدرس عمومی تصویر را برای درج در متن برمی‌گرداند.
+     */
+    public function uploadContentImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:5120',
         ]);
 
-        return back()->with('success', 'وضعیت پست تغییر کرد.');
+        $path = $request->file('image')->store('posts/content', 'public');
+
+        return response()->json([
+            'location' => Storage::disk('public')->url($path),
+        ]);
+    }
+
+    protected function validateData(Request $request): array
+    {
+        return $request->validate([
+            'title_fa'    => 'required|string|max:255',
+            'title_en'    => 'nullable|string|max:255',
+            'category_fa' => 'nullable|string|max:255',
+            'category_en' => 'nullable|string|max:255',
+            'excerpt_fa'  => 'nullable|string|max:1000',
+            'excerpt_en'  => 'nullable|string|max:1000',
+            'content_fa'  => 'required|string',
+            'content_en'  => 'nullable|string',
+            'status'      => 'required|in:draft,published',
+            'image'       => 'nullable|image|max:4096',
+        ]);
     }
 }

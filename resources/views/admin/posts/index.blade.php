@@ -1,19 +1,20 @@
 @extends('layouts.admin')
 
 @section('title', 'مدیریت وبلاگ')
-@section('subtitle', 'ایجاد، ویرایش و مدیریت پست‌های وبلاگ سایت')
+@section('subtitle', 'ایجاد، ویرایش و مدیریت پست‌های دوزبانه وبلاگ سایت')
 
 @section('content')
-    <div class="table-card">
+    <div class="table-card" style="padding: 30px 30px;">
         <div class="table-toolbar">
             <div class="topbar-search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <input type="text" id="searchInput" placeholder="جستجو بر اساس عنوان یا دسته‌بندی..." onkeyup="filterTable()">
             </div>
 
-            <a href="{{ route('posts.create') }}" class="btn-primary-action">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-                پست جدید
+            <a href="{{ route('posts.create') }}"  style="background: var(--brand);color: #fff;box-shadow: 0 8px 20px rgba(245, 48, 3, .22);display: inline-flex;align-items: center;gap: 8px;padding: 10px 20px;border-radius: 99px;font-size: 14px;font-weight: 700;border: 1px solid transparent;transition: .15s;white-space: nowrap;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"></path></svg>
+                افزودن پست
+
             </a>
         </div>
 
@@ -29,6 +30,7 @@
                     <th>تصویر</th>
                     <th>عنوان</th>
                     <th>دسته‌بندی</th>
+                    <th>زبان‌ها</th>
                     <th>نویسنده</th>
                     <th>تاریخ</th>
                     <th>وضعیت</th>
@@ -41,13 +43,21 @@
                     <tr>
                         <td>
                             @if($post->image)
-                                <img src="{{ $post->image_url }}" alt="{{ $post->title }}" style="width:48px; height:48px; object-fit:cover; border-radius:8px;">
+                                <img src="{{ $post->image_url }}" alt="{{ $post->title_fa }}" style="width:48px; height:48px; object-fit:cover; border-radius:8px;">
                             @else
                                 <div style="width:48px; height:48px; border-radius:8px; background:#eef2f7;"></div>
                             @endif
                         </td>
-                        <td class="searchable">{{ $post->title }}</td>
-                        <td class="searchable">{{ $post->category ?? '—' }}</td>
+                        <td class="searchable">{{ $post->title_fa }}</td>
+                        <td class="searchable">{{ $post->category_fa ?? '—' }}</td>
+                        <td>
+                            <span class="badge" style="background:#eef2f7; color:#5c6b7a; padding:3px 10px; border-radius:999px; font-size:11.5px;">FA</span>
+                            @if($post->hasEnglishVersion())
+                                <span class="badge" style="background:#e6f7ec; color:#1c7c3f; padding:3px 10px; border-radius:999px; font-size:11.5px;">EN</span>
+                            @else
+                                <span class="badge" style="background:#fbeaea; color:#b51c1c; padding:3px 10px; border-radius:999px; font-size:11.5px;">EN ناقص</span>
+                            @endif
+                        </td>
                         <td>{{ $post->author->name ?? '—' }}</td>
                         <td>{{ $post->created_at->format('Y/m/d H:i') }}</td>
                         <td>
@@ -83,7 +93,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" style="text-align:center; padding:24px; color:var(--muted-2);">
+                        <td colspan="9" style="text-align:center; padding:24px; color:var(--muted-2);">
                             هنوز هیچ پستی ثبت نشده است.
                         </td>
                     </tr>
@@ -114,6 +124,12 @@
                 if (txtValue.toUpperCase().indexOf(filter) > -1) { match = true; break; }
             }
             tr[i].style.display = match ? "" : "none";
+        }
+    }
+
+    function confirmDelete(id) {
+        if (confirm('آیا از حذف این پست مطمئن هستید؟')) {
+            document.getElementById('delete-form-' + id).submit();
         }
     }
 </script>

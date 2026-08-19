@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class TeamMemberController extends Controller
 {
+    /**
+     * Public profile page for a single team member, resolved by slug.
+     */
+    public function show(TeamMembers $team)
+    {
+        $team->load('portfolios');
+
+        return view('team-member', compact('team'));
+    }
+
     public function index()
     {
         $teamMembers = TeamMembers::latest()->get();

@@ -9,14 +9,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LocaleController;
 
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
-Route::resource('posts', AdminPostController::class)->except(['show']);
+Route::resource('posts', AdminPostController::class )->except(['show']);
+
 Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])
     ->name('posts.toggle-status');
 
@@ -51,3 +55,15 @@ Route::get('project-requests', [AdminProjectRequestController::class, 'index'])-
 Route::get('project-requests/{projectRequest}', [AdminProjectRequestController::class, 'show'])->name('project-requests.show');
 Route::patch('project-requests/{projectRequest}/toggle-read', [AdminProjectRequestController::class, 'toggleRead'])->name('project-requests.toggle-read');
 Route::delete('project-requests/{projectRequest}', [AdminProjectRequestController::class, 'destroy'])->name('project-requests.destroy');
+
+Route::get('/portfolio', [PortfolioController::class, 'publicIndex'])->name('portfolio.list');
+Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+Route::get('/team/{team:slug}', [TeamMemberController::class, 'show'])->name('team.show');
+Route::resource('posts', AdminPostController::class)->except(['show']);
+Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])->name('posts.toggle-status');
+Route::post('posts/upload-content-image', [AdminPostController::class, 'uploadContentImage'])->name('posts.upload-content-image');
+Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
+
+Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');

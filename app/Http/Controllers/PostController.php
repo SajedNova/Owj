@@ -26,11 +26,15 @@ class PostController extends Controller
 
         $relatedPosts = Post::published()
             ->where('id', '!=', $post->id)
-            ->when($post->category, fn ($q) => $q->where('category', $post->category))
+            ->when($post->category_fa, fn ($q) => $q->where('category_fa', $post->category_fa))
             ->latest('published_at')
             ->take(3)
             ->get();
 
         return view('blog.show', compact('post', 'relatedPosts'));
+    }
+    public function post()
+    {
+        return view('admin.posts.index');
     }
 }
