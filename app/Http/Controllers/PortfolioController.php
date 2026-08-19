@@ -10,6 +10,40 @@ use Illuminate\Support\Facades\Storage;
 
 class PortfolioController extends Controller
 {
+    /**
+     * Public listing page — all published portfolios.
+     */
+    public function publicIndex()
+    {
+        $portfolios = Portfolios::where('is_published', true)
+            ->with('images')
+            ->latest()
+            ->get();
+
+        return view('portfolio-list', compact('portfolios'));
+    }
+
+    /**
+     * Public detail page for a single portfolio, resolved by slug.
+     */
+    public function show(Portfolios $portfolio)
+    {
+        if (!$portfolio->is_published) {
+            abort(404);
+        }
+
+        $portfolio->load(['images', 'teamMembers']);
+
+        $similar = Portfolios::where('is_published', true)
+            ->where('category', $portfolio->category)
+            ->where('id', '!=', $portfolio->id)
+            ->with('images')
+            ->limit(3)
+            ->get();
+
+        return view('portfolio-detail', compact('portfolio', 'similar'));
+    }
+
     public function index()
     {
         $portfolios = Portfolios::with(['images', 'teamMembers'])->get();
@@ -84,4 +118,7 @@ class PortfolioController extends Controller
         $portfolio->update(['is_published' => !$portfolio->is_published]);
         return back()->with('success', 'وضعیت انتشار با موفقیت تغییر کرد.');
     }
+
+
 }
+
