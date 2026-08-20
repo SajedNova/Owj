@@ -19,8 +19,8 @@ use Stringable;
  * با گرفتن یک پرامت کوتاه از ادمین، یک مقاله کامل (عنوان، خلاصه،
  * دسته‌بندی و متن HTML) هم به فارسی و هم به انگلیسی تولید می‌کند.
  */
-#[Provider(Lab::OpenAI)]
-#[Model('gpt-4.1-mini')]
+#[Provider(Lab::Gemini)]
+#[Model('Gemini-3.6-flash')]
 #[MaxTokens(8000)]
 #[Temperature(0.7)]
 class BlogPostGenerator implements Agent, HasStructuredOutput
