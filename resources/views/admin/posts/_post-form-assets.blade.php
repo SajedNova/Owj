@@ -56,6 +56,25 @@
     .rich-editor { background: #fafbfe; border-radius: 10px; }
     .rich-editor .ql-toolbar { border-radius: 10px 10px 0 0; border-color: #e3e7ee; }
     .rich-editor .ql-container { border-radius: 0 0 10px 10px; border-color: #e3e7ee; min-height: 260px; font-size: 14px; }
+
+    /* AI generate panel */
+    .ai-generate-box {
+        border: 1px dashed #c9b6f7;
+        background: linear-gradient(135deg, #f7f3ff 0%, #fbfaff 100%);
+        border-radius: 12px;
+        padding: 16px 18px;
+    }
+    .ai-generate-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .ai-generate-header strong { font-size: 14px; color: #1a1a2e; display: flex; align-items: center; gap: 6px; }
+    .ai-generate-box textarea#aiPrompt {
+        width: 100%; min-height: 70px; padding: 12px 14px; border-radius: 10px;
+        border: 1px solid #e3e7ee; font-size: 14px; font-family: inherit;
+        background: #fff; color: #1a1a2e; resize: vertical;
+    }
+    .ai-generate-box textarea#aiPrompt:focus { outline: none; border-color: #7c3aed; }
+    #aiGenerateBtn { background: #7c3aed; }
+    #aiGenerateBtn:disabled { opacity: .65; cursor: not-allowed; }
+    #aiStatus { font-size: 12.5px; }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.js"></script>
@@ -82,6 +101,7 @@
 
     // --- تنظیمات آپلود تصویر داخل ادیتور ---
     const CONTENT_IMAGE_UPLOAD_URL = "{{ route('posts.upload-content-image') }}";
+    const AI_GENERATE_URL = "{{ route('posts.generate-ai') }}";
     const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.content
         || document.querySelector('input[name="_token"]').value;
 
@@ -111,7 +131,11 @@
         };
     }
 
-    function makeEditor(id, textareaId) {
+    // نگهداری دسترسی سراسری به ادیتورهای Quill تا پنل هوش مصنوعی
+    // بتواند محتوای تولیدشده را مستقیماً داخل آن‌ها قرار دهد.
+    window.blogQuillEditors = {};
+
+    function makeEditor(id, textareaId, lang) {
         const container = document.getElementById(id);
         if (!container) return null;
 
@@ -141,9 +165,90 @@
             textarea.value = quill.root.innerHTML;
         });
 
+        window.blogQuillEditors[lang] = quill;
+
         return quill;
     }
 
-    makeEditor('editor_fa', 'content_fa');
-    makeEditor('editor_en', 'content_en');
+    makeEditor('editor_fa', 'content_fa', 'fa');
+    makeEditor('editor_en', 'content_en', 'en');
+
+    // --- پنل تولید پست با هوش مصنوعی ---
+    (function () {
+        const toggleBtn = document.getElementById('aiToggleBtn');
+        const panel = document.getElementById('aiGeneratePanel');
+        const generateBtn = document.getElementById('aiGenerateBtn');
+        const promptField = document.getElementById('aiPrompt');
+        const status = document.getElementById('aiStatus');
+
+        if (!toggleBtn || !generateBtn) return;
+
+        toggleBtn.addEventListener('click', function () {
+            const isOpen = panel.style.display !== 'none';
+            panel.style.display = isOpen ? 'none' : 'flex';
+            toggleBtn.textContent = isOpen ? 'باز کردن' : 'بستن';
+        });
+
+        generateBtn.addEventListener('click', function () {
+            const promptText = promptField.value.trim();
+
+            status.style.color = '#e5484d';
+            if (!promptText) {
+                status.textContent = 'لطفاً یک پرامت وارد کنید.';
+                return;
+            }
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'در حال تولید...';
+            status.textContent = 'در حال ارتباط با هوش مصنوعی، ممکن است چند ثانیه طول بکشد...';
+            status.style.color = '#8a93a3';
+
+            fetch(AI_GENERATE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ prompt: promptText }),
+            })
+                .then(async (res) => {
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'خطا در تولید محتوا.');
+                    return data;
+                })
+                .then((data) => {
+                    setValue('title_fa', data.title_fa);
+                    setValue('category_fa', data.category_fa);
+                    setValue('excerpt_fa', data.excerpt_fa);
+
+                    setValue('title_en', data.title_en);
+                    setValue('category_en', data.category_en);
+                    setValue('excerpt_en', data.excerpt_en);
+
+                    if (window.blogQuillEditors.fa) {
+                        window.blogQuillEditors.fa.root.innerHTML = data.content_fa || '';
+                    }
+                    if (window.blogQuillEditors.en) {
+                        window.blogQuillEditors.en.root.innerHTML = data.content_en || '';
+                    }
+
+                    status.style.color = '#1c7c3f';
+                    status.textContent = 'محتوا با موفقیت تولید شد. پیش از ذخیره، آن را بازبینی کنید.';
+                })
+                .catch((err) => {
+                    status.style.color = '#e5484d';
+                    status.textContent = err.message || 'خطا در تولید محتوا.';
+                })
+                .finally(() => {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = 'تولید مقاله';
+                });
+        });
+
+        function setValue(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.value = value || '';
+        }
+    })();
 </script>

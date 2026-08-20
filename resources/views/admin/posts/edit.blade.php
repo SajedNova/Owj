@@ -9,6 +9,8 @@
             @csrf
             @method('PUT')
 
+            @include('admin.posts._ai-generate-panel')
+
             <div class="lang-tabs">
                 <button type="button" class="lang-tab active" data-lang="fa">فارسی</button>
                 <button type="button" class="lang-tab" data-lang="en">

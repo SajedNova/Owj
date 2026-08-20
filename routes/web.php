@@ -17,13 +17,11 @@ use App\Http\Controllers\LocaleController;
 
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [PostController::class, 'show'])->name('blog.show');
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
-Route::resource('posts', AdminPostController::class )->except(['show']);
 
 Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])
     ->name('posts.toggle-status');
@@ -39,10 +37,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
+
+    Route::resource('posts', AdminPostController::class )->except(['show']);
+
+    Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])
+        ->name('posts.toggle-status');
+
     Route::resource('portfolios', PortfolioController::class);
     Route::post('/portfolios/{portfolio}/toggle-publish', [PortfolioController::class, 'togglePublish'])->name('portfolios.toggle-publish');
     Route::resource('team', TeamMemberController::class);
 
+    Route::post('/posts/generate-ai', [PostController::class, 'generateAi'])->name('posts.generate-ai');
 
     // Service Management
     Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class)->only(['index', 'create', 'store', 'destroy']);
@@ -64,6 +70,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // Hero Section Management
     Route::get('/hero-section', [App\Http\Controllers\Admin\HeroSectionController::class, 'edit'])->name('admin.hero-section.edit');
     Route::put('/hero-section', [App\Http\Controllers\Admin\HeroSectionController::class, 'update'])->name('admin.hero-section.update');
+    Route::resource('posts', AdminPostController::class )->except(['show']);
 
     // Site Settings Management
     Route::get('/site-settings', [App\Http\Controllers\Admin\SiteSettingController::class, 'edit'])->name('admin.site-settings.edit');
@@ -73,6 +80,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::put('/about-sction/update', [AboutSectionController::class, 'update'])->name('admin.about-section.update');
 
     Route::get('/brands', [BrandController::class, 'index'])->name('brands.index');
+    Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])->name('posts.toggle-status');
+    Route::post('posts/upload-content-image', [AdminPostController::class, 'uploadContentImage'])->name('posts.upload-content-image');
 });
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
@@ -80,9 +89,8 @@ Route::get('/portfolio', [PortfolioController::class, 'publicIndex'])->name('por
 Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
 Route::get('/team/{team:slug}', [TeamMemberController::class, 'show'])->name('team.show');
-Route::resource('posts', AdminPostController::class)->except(['show']);
-Route::patch('posts/{post}/toggle-status', [AdminPostController::class, 'toggleStatus'])->name('posts.toggle-status');
-Route::post('posts/upload-content-image', [AdminPostController::class, 'uploadContentImage'])->name('posts.upload-content-image');
+//Route::resource('posts', PostController::class)->except(['show']);
+
 Route::get('/lang/{locale}', [LocaleController::class, 'switch'])->name('lang.switch');
 
 Route::get('/blog', [PostController::class, 'index'])->name('blog.index');

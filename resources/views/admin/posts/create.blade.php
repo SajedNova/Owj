@@ -8,6 +8,8 @@
         <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="post-form" id="postForm">
             @csrf
 
+            @include('admin.posts._ai-generate-panel')
+
             <div class="lang-tabs">
                 <button type="button" class="lang-tab active" data-lang="fa">فارسی</button>
                 <button type="button" class="lang-tab" data-lang="en">English</button>
