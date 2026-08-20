@@ -298,37 +298,40 @@
 
   <!-- ===== ARTICLES ===== -->
   <section class="nx-section nx-section--alt" id="articles">
-    <div class="nx-header">
-      <span class="nx-tag" data-i18n="art.tag">✦ Articles</span>
-      <h2 data-i18n-html="art.title">From the <span>blog</span></h2>
-      <p data-i18n="art.desc">Notes on engineering, design, and building products that last.</p>
-    </div>
-    <div class="art-grid">
-      <article class="art-card">
-        <div class="art-card__img"><span class="art-card__cat" data-i18n="art.c1cat">Engineering</span></div>
-        <div class="art-card__body">
-          <div class="art-card__date">Jul 12, 2026</div>
-          <h3 data-i18n="art.c1t">Scaling a monolith without a rewrite</h3>
-          <p data-i18n="art.c1d">Practical steps for handling growth before you reach for microservices.</p>
-        </div>
-      </article>
-      <article class="art-card">
-        <div class="art-card__img"><span class="art-card__cat" data-i18n="art.c2cat">Design</span></div>
-        <div class="art-card__body">
-          <div class="art-card__date">Jun 28, 2026</div>
-          <h3 data-i18n="art.c2t">Designing forms people actually finish</h3>
-          <p data-i18n="art.c2d">Small changes to layout and copy that cut abandonment rates.</p>
-        </div>
-      </article>
-      <article class="art-card">
-        <div class="art-card__img"><span class="art-card__cat" data-i18n="art.c3cat">Product</span></div>
-        <div class="art-card__body">
-          <div class="art-card__date">Jun 3, 2026</div>
-          <h3 data-i18n="art.c3t">Shipping a v1 in six weeks</h3>
-          <p data-i18n="art.c3d">How we scope a first release without cutting the wrong corners.</p>
-        </div>
-      </article>
-    </div>
+      <div class="nx-header">
+          <span class="nx-tag" data-i18n="art.tag">✦ Articles</span>
+          <h2 data-i18n-html="art.title">From the <span>blog</span></h2>
+          <p data-i18n="art.desc">Notes on engineering, design, and building products that last.</p>
+      </div>
+      <div class="art-grid">
+          @foreach(\App\Models\Post::published()->latest('published_at')->take(4)->get() as $post)
+              <a href="{{ route('blog.show', $post->slug) }}" class="art-card">
+                  <div class="art-card__img">
+              <span class="art-card__cat"
+                    data-fa="{{ $post->category_fa }}"
+                    data-en="{{ $post->category_en }}">
+                  {{ app()->getLocale() === 'fa' ? $post->category_fa : $post->category_en }}
+              </span>
+                      <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title_fa }}">
+                  </div>
+                  <div class="art-card__body">
+                      <div class="art-card__date">
+                          {{ $post->published_at?->format('M d, Y') ?? $post->created_at->format('M d, Y') }}
+                      </div>
+                      <h3 data-fa="{{ $post->title_fa }}"
+                          data-en="{{ $post->title_en }}">
+                          {{ app()->getLocale() === 'fa' ? $post->title_fa : $post->title_en }}
+                      </h3>
+                      <p data-fa="{{ $post->excerpt_fa ?? \Illuminate\Support\Str::limit(strip_tags($post->content_fa), 70) }}"
+                         data-en="{{ $post->excerpt_en ?? \Illuminate\Support\Str::limit(strip_tags($post->content_en), 70) }}">
+                          {{ app()->getLocale() === 'fa'
+                              ? ($post->excerpt_fa ?? \Illuminate\Support\Str::limit(strip_tags($post->content_fa ), 70))
+                              : ($post->excerpt_en ?? \Illuminate\Support\Str::limit(strip_tags($post->content_en), 70)) }}
+                      </p>
+                  </div>
+              </a>
+          @endforeach
+      </div>
   </section>
 
   <!-- ===== CAREERS ===== -->

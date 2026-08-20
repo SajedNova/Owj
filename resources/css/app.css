@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @import './site.css';
+@import './portfolio.css';
+@import "./portfolio-list.css";
+@import './team-member.css';
+@import "./blog.css";
 
 :root{
   --brand:#f53003;

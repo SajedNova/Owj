@@ -56,6 +56,7 @@
     </div>
 </section>
 @endif
+@endsection
 
 @section('scripts')
 <style>
@@ -68,5 +69,4 @@
     /* تصاویر داخل متن پست ریسپانسیو باشند */
     .single-content img { max-width: 100%; height: auto; border-radius: 10px; margin: 12px 0; }
 </style>
-@endsection
 @endsection
